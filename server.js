@@ -13,5 +13,5 @@ app.listen(4000, function () {
 app.post('/pushLead', urlEncodedParser, (req, res) => {
     console.log(req.body)
     pushNewLead(req.body)
-    res.end('Sois content, plèbe, car ta création fonctionne')
+    res.end('OK')
 })

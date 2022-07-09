@@ -25,7 +25,6 @@ function pushNewLead(data) {
         console.log(`status code : ${res.statusCode}`)
 
         res.on('data', message => {
-            process.stdout.write('allah ' + message)
             if (JSON.parse(message).code == "INVALID_TOKEN") {
                 updateTokenAndRetry(data)
             }
@@ -55,7 +54,6 @@ function updateTokenAndRetry(data) {
     let req = https.request(zohoAccountsOptions, res => {
         res.on('data',  message => {
             zohoCrmOptions.headers.Authorization = 'Zoho-oauthtoken ' + JSON.parse(message).access_token
-            process.stdout.write('ahmed ' + message)
             pushNewLead(data)
         })
     })
