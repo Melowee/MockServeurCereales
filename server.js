@@ -22,6 +22,7 @@ app.post('/pushLead', urlEncodedParser, (req, res) => {
         res.status(200).send('OK')
 
     }catch(error){
+        console.log(error.message)
         return res.status(400).send(error.message);
     }
 })

@@ -1,14 +1,15 @@
 function fields_ok(data) {
   console.log(data)
-
-  if (!verify_field_email(data.email)) {
-    throw Error("The email is not in a valid format.")
-  }
   if (!verify_field_name(data.firstName)) {
     throw Error("The first name is not in a valid format.")
   }
+
   if (!verify_field_name(data.lastName)) {
     throw Error("The last name is not in a valid format.")
+  }
+
+  if (!verify_field_email(data.email)) {
+    throw Error("The email is not in a valid format.")
   }
 
   return true;
