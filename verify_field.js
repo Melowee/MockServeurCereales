@@ -29,4 +29,6 @@ function verify_field_name(name) {
 
 }
 
-module.exports = { fields_ok };
+module.exports = { fields_ok , verify_field_email, verify_field_name} ;
+
+
