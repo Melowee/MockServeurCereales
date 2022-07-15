@@ -1,7 +1,7 @@
 const req = require('express/lib/request');
 const https = require('https')
 const secret = require('./secret.json')
-const verify_field = require('./verify_field')
+const { fields_ok } = require('./verify_field')
 
 token = "";
 zohoCrmOptions = {
@@ -21,7 +21,7 @@ zohoAccountsOptions = {
 
 function pushNewLead(data) {
     console.log(zohoCrmOptions)
-    if (verify_field.fields_ok(data)) {
+    if (fields_ok(data)) {
         let req = https.request(zohoCrmOptions, res => {
             console.log(`status code : ${res.statusCode}`)
 
@@ -59,8 +59,6 @@ function updateTokenAndRetry(data) {
             pushNewLead(data)
         })
     })
-
-
 
     req.on('error', error => {
         console.log(error)
