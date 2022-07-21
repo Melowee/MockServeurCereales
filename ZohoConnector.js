@@ -1,7 +1,7 @@
 const req = require('express/lib/request');
 const https = require('https')
 const secret = require('./secret.json')
-
+const { fields_ok } = require('./verify_field')
 
 token = "";
 zohoCrmOptions = {
@@ -21,44 +21,44 @@ zohoAccountsOptions = {
 
 function pushNewLead(data) {
     console.log(zohoCrmOptions)
-    let req = https.request(zohoCrmOptions, res => {
-        console.log(`status code : ${res.statusCode}`)
+    if (fields_ok(data)) {
+        let req = https.request(zohoCrmOptions, res => {
+            console.log(`status code : ${res.statusCode}`)
 
-        res.on('data', message => {
-            if (JSON.parse(message).code == "INVALID_TOKEN") {
-                updateTokenAndRetry(data)
-            }
-        })
-    });
+            res.on('data', message => {
+                if (JSON.parse(message).code == "INVALID_TOKEN") {
+                    updateTokenAndRetry(data)
+                }
+            })
+        });
 
-    let body = {
-        data: [
-            {
-                First_Name: data.firstName,
-                Last_Name: data.lastName,
-                Email: data.email
-            }
-        ]
+        let body = {
+            data: [
+                {
+                    First_Name: data.firstName,
+                    Last_Name: data.lastName,
+                    Email: data.email
+                }
+            ]
+        }
+
+        req.write(JSON.stringify(body));
+
+        req.on('error', error => {
+            console.log(error.message);
+        });
+
+        req.end();
     }
-
-    req.write(JSON.stringify(body));
-
-    req.on('error', error => {
-        console.log(error.message);
-    });
-
-    req.end();
 }
 
 function updateTokenAndRetry(data) {
     let req = https.request(zohoAccountsOptions, res => {
-        res.on('data',  message => {
+        res.on('data', message => {
             zohoCrmOptions.headers.Authorization = 'Zoho-oauthtoken ' + JSON.parse(message).access_token
             pushNewLead(data)
         })
     })
-
-
 
     req.on('error', error => {
         console.log(error)
