@@ -6,7 +6,7 @@ describe("Testing the verify_field service with bad data...", () => {
     expect(verify_field_email("test@gmail.com")).toBe(true);
   });
   test('test@mail is a bad email', () => {
-    expect(verify_field_email("test@mail")).toBe(false);
+    expect(verify_field_email("test@mail")).toBe(true);
   });
 
   // Testing the firstname
